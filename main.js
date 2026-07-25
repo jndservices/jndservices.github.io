@@ -57,8 +57,8 @@
   const backdrop = document.getElementById('menu-backdrop');
   const closeBtn = document.getElementById('mobile-close');
 
-  function open() { menu.classList.add('open'); backdrop.classList.add('open'); }
-  function close() { menu.classList.remove('open'); backdrop.classList.remove('open'); }
+  function open() { menu.classList.add('open'); backdrop.classList.add('open'); hamburger.classList.add('open'); }
+  function close() { menu.classList.remove('open'); backdrop.classList.remove('open'); hamburger.classList.remove('open'); }
 
   hamburger.addEventListener('click', open);
   closeBtn.addEventListener('click', close);
@@ -189,7 +189,11 @@ function jndToast(msg) {
   async function loadReviews() {
     try {
       const res = await fetch(SB_URL + '/rest/v1/' + TABLE + '?select=*&order=created_at.desc&limit=50', { headers: HEADERS });
-      if (!res.ok) throw new Error('fetch failed');
+      if (!res.ok) {
+        const errBody = await res.text();
+        console.error('Load reviews failed — HTTP', res.status, res.statusText, '\nResponse body:', errBody, '\nTable:', TABLE, '\nURL:', SB_URL);
+        throw new Error('fetch failed');
+      }
       reviews = (await res.json()).reverse();
     } catch (e) {
       reviews = [];
@@ -230,7 +234,11 @@ function jndToast(msg) {
         headers: Object.assign({}, HEADERS, { 'Prefer': 'return=representation' }),
         body: JSON.stringify(payload)
       });
-      if (!res.ok) throw new Error(await res.text());
+      if (!res.ok) {
+        const errBody = await res.text();
+        console.error('Review submit failed — HTTP', res.status, res.statusText, '\nResponse body:', errBody, '\nTable:', TABLE, '\nURL:', SB_URL);
+        throw new Error(errBody);
+      }
       const [saved] = await res.json();
       reviews.push(saved || Object.assign({ id: Date.now(), created_at: new Date().toISOString() }, payload));
       renderReviews(reviews);
