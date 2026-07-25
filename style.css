@@ -53,14 +53,15 @@
   --maxw:1160px;
   color-scheme: light;
 
-  /* -- nav is intentionally theme-independent: always the dark bar -- */
-  --nav-bg: rgba(15,19,26,0.92);
-  --nav-bg-solid: #0F131A;
-  --nav-line: rgba(255,255,255,0.08);
-  --nav-text: #A8AFB9;
-  --nav-text-strong: #F2EFE7;
-  --nav-muted: #6E7683;
+  /* -- nav: white in light mode, black in dark mode -- */
+  --nav-bg: rgba(255,255,255,0.85);
+  --nav-bg-solid: #FFFFFF;
+  --nav-line: rgba(21,36,56,0.08);
+  --nav-text: #57534A;
+  --nav-text-strong: #1D1B18;
+  --nav-muted: #8B8676;
   --nav-accent: var(--gold);
+  --nav-toggle-bg: rgba(21,36,56,0.06);
 }
 
 [data-theme="dark"]{
@@ -74,6 +75,15 @@
   --text3:#7F8B98;
   --ink:#F2EFE7;
   --red-tint:#3A2226;
+
+  /* -- nav: black in dark mode -- */
+  --nav-bg: rgba(10,12,16,0.92);
+  --nav-bg-solid: #0A0C10;
+  --nav-line: rgba(255,255,255,0.08);
+  --nav-text: #A8AFB9;
+  --nav-text-strong: #F2EFE7;
+  --nav-muted: #6E7683;
+  --nav-toggle-bg: rgba(255,255,255,0.06);
 
   --navy:#0B121C;
   --navy-light:#182534;
@@ -194,7 +204,7 @@ section{ padding:5.5rem 1.5rem; position:relative; }
   transition:transform .32s ease, box-shadow .32s ease;
 }
 .site-nav.nav-hidden{ transform:translateY(-100%); box-shadow:none; }
-/* nav is intentionally identical in light and dark mode — no [data-theme="dark"] override here */
+/* nav now follows the theme: white bar in light mode, black bar in dark mode */
 .nav-logo{ display:flex; align-items:center; gap:0.65rem; }
 .nav-logo img{ height:28px; width:auto; filter:drop-shadow(0 3px 6px rgba(0,0,0,0.4)); }
 .nav-wordmark{ display:flex; flex-direction:column; line-height:1; }
@@ -211,8 +221,8 @@ section{ padding:5.5rem 1.5rem; position:relative; }
 /* -- theme toggle: rounded 3D pill with sliding gold ball, same on both themes -- */
 .theme-toggle{
   width:46px; height:25px; border-radius:20px; border:1px solid var(--nav-line);
-  background:rgba(255,255,255,0.06);
-  box-shadow:inset 0 1px 3px rgba(0,0,0,0.4);
+  background:var(--nav-toggle-bg);
+  box-shadow:inset 0 1px 3px rgba(0,0,0,0.18);
   cursor:pointer; position:relative; padding:0;
   transition:background .25s ease, border-color .25s ease;
 }
